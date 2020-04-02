@@ -22,7 +22,6 @@ GalleryPhotoWidget::GalleryPhotoWidget(GalleryPhotoData data, QWidget *parent) :
     this->subTitle = data.subTitle;
 
     setFixedSize(fixed_width, fixed_height);
-    pixmap.scaled(pixmap_width, pixmap_height);
 
     this->show();
 }
@@ -38,22 +37,25 @@ void GalleryPhotoWidget::paintEvent(QPaintEvent *event)
     // 获取图片路径
     int c;
     int r;
+    int margin;
     if (!hover_progress)
     {
         c = choking;
         r = radius_x;
+        margin = 10;
     }
     else
     {
         c = choking * (1 - getNolinearProg(hover_progress, hovering?FastSlower:SlowFaster));
         r = radius_zoom < 0 ? radius_x :
                               radius_x + (radius_zoom-radius_x) * hover_progress / 100;
+        margin = sqrt(120-hover_progress);
     }
-    const int margin = 10;
 
-    path.addRoundedRect(QRect(c+margin,c+margin,size().width()-c*2-margin*2,(size().width()-c*2-margin*2)*pixmap_height/pixmap_width), r, r);
+    QRect rect(c+margin,c+margin,size().width()-c*2-margin*2,(size().width()-c*2-margin*2)*pixmap_height/pixmap_width);
+    path.addRoundedRect(rect, r, r);
     painter.setClipPath(path, Qt::IntersectClip);
-    painter.drawPixmap(QRect(0,0,width(), height()), pixmap);
+    painter.drawPixmap(rect, pixmap);
 
     // 画文字
 }
