@@ -25,7 +25,7 @@ void MainWindow::initData()
     {
         QPixmap pixmap(":/pictures/a");
         QString title = "诸天谍影" + QString::number(i);
-        QString subTitle = "起点上随便找的封面" + QString::number(i);
+        QString subTitle = "起点上随便找的封面诸天谍影" + QString::number(i);
         GalleryPhotoData data{pixmap, title, subTitle};
         list.append(data);
     }

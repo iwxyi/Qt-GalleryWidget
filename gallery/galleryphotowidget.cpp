@@ -67,5 +67,7 @@ void GalleryPhotoWidget::paintEvent(QPaintEvent *event)
     painter.drawText(QPoint(rect.left(), rect.bottom()+line_height), title);
 
     painter.setPen(subTitle_color);
-    painter.drawText(QPoint(rect.left(), rect.bottom()+line_height*2), subTitle);
+    QRect f_rect = fm.boundingRect(QRect(rect.left(),rect.bottom()+line_height*1.5,rect.width(),0),Qt::TextWordWrap,subTitle);
+    painter.drawText(f_rect, Qt::TextWordWrap, subTitle);
+//    painter.drawText(QPoint(rect.left(), rect.bottom()+line_height*2), subTitle);
 }
