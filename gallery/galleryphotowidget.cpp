@@ -49,13 +49,23 @@ void GalleryPhotoWidget::paintEvent(QPaintEvent *event)
         c = choking * (1 - getNolinearProg(hover_progress, hovering?FastSlower:SlowFaster));
         r = radius_zoom < 0 ? radius_x :
                               radius_x + (radius_zoom-radius_x) * hover_progress / 100;
-        margin = sqrt(120-hover_progress);
+        margin = sqrt(125-hover_progress);
     }
 
     QRect rect(c+margin,c+margin,size().width()-c*2-margin*2,(size().width()-c*2-margin*2)*pixmap_height/pixmap_width);
     path.addRoundedRect(rect, r, r);
+    painter.save();
     painter.setClipPath(path, Qt::IntersectClip);
     painter.drawPixmap(rect, pixmap);
+    painter.restore();
 
     // 画文字
+    QFontMetrics fm(this->font());
+    int line_height = fm.lineSpacing();
+
+    painter.setPen(title_color);
+    painter.drawText(QPoint(rect.left(), rect.bottom()+line_height), title);
+
+    painter.setPen(subTitle_color);
+    painter.drawText(QPoint(rect.left(), rect.bottom()+line_height*2), subTitle);
 }

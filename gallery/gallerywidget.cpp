@@ -40,7 +40,7 @@ void GalleryWidget::resizeGallery(QPoint emit_pos)
     int total_height = row_count * (gpw_height + item_spacing_v) + item_spacing_v*2;
     center_widget->setMinimumHeight(total_height);
     center_widget->resize(center_widget->width(), total_height);
-    int total_left = (center_widget->width() - bar_width - col_count * (gpw_width + item_spacing_h)) / 2;
+    int total_left = (center_widget->width() - col_count * (gpw_width + item_spacing_h)) / 2;
     int total_top = item_spacing_v;
 
     int cur_row = 0, cur_col = 0;
