@@ -1,8 +1,13 @@
 #include "gallerywidget.h"
 
-GalleryWidget::GalleryWidget(QWidget *parent) : QWidget(parent)
-{
+int GalleryWidget::item_spacing_h = 30;
+int GalleryWidget::item_spacing_v = 30;
 
+GalleryWidget::GalleryWidget(QWidget *parent) : QScrollArea(parent)
+{
+    center_widget = new QWidget(this);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setWidget(center_widget);
 }
 
 /**
@@ -18,9 +23,45 @@ void GalleryWidget::loadData(QList<GalleryPhotoData> list)
 
     foreach (GalleryPhotoData data, list)
     {
-        widgets.append(new GalleryPhotoWidget(data, this));
+        widgets.append(new GalleryPhotoWidget(data, center_widget));
     }
-    startAnimation();
+
+    resizeGallery();
+}
+
+void GalleryWidget::resizeGallery(QPoint emit_pos)
+{
+    int gpw_width = GalleryPhotoWidget::fixed_width, gpw_height = GalleryPhotoWidget::fixed_height;
+    int bar_width = verticalScrollBar()->width();
+    int col_count = qMax((center_widget->width()-item_spacing_h-bar_width) / (gpw_width + item_spacing_h), 1); // 一列数量
+    if (col_count > widgets.size())
+        col_count = widgets.size();
+    int row_count = qMax((widgets.size() + col_count - 1) / col_count, 1); // 行数
+    int total_height = row_count * (gpw_height + item_spacing_v) + item_spacing_v*2;
+    center_widget->setMinimumHeight(total_height);
+    center_widget->resize(center_widget->width(), total_height);
+    int total_left = (center_widget->width() - bar_width - col_count * (gpw_width + item_spacing_h)) / 2;
+    int total_top = item_spacing_v;
+
+    int cur_row = 0, cur_col = 0;
+    for (int i = 0; i < widgets.size(); i++)
+    {
+        GalleryPhotoWidget* widget = widgets.at(i);
+        QPoint pos(total_left + cur_col * (gpw_width + item_spacing_h), total_top + cur_row * (gpw_height + item_spacing_v));
+        QPropertyAnimation* ani = new QPropertyAnimation(widget, "pos");
+        ani->setStartValue(widget->pos());
+        ani->setEndValue(pos);
+        ani->setDuration(300);
+        ani->setEasingCurve(QEasingCurve::OutQuad);
+        ani->start();
+
+        cur_col++;
+        if (cur_col >= col_count)
+        {
+            cur_col = 0;
+            cur_row++;
+        }
+    }
 }
 
 /**
@@ -29,4 +70,11 @@ void GalleryWidget::loadData(QList<GalleryPhotoData> list)
 void GalleryWidget::startAnimation()
 {
 
+}
+
+void GalleryWidget::resizeEvent(QResizeEvent *event)
+{
+    QScrollArea::resizeEvent(event);
+    center_widget->setFixedWidth(width());
+    resizeGallery();
 }

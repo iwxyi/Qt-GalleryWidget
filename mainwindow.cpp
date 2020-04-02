@@ -26,5 +26,5 @@ void MainWindow::initData()
         GalleryPhotoData data{pixmap, title, subTitle};
         list.append(data);
     }
-
+    ui->widget->loadData(list);
 }

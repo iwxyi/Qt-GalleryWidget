@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QLabel>
+#include <QVBoxLayout>
 
 struct GalleryPhotoData
 {
@@ -16,30 +17,20 @@ class GalleryPhotoWidget : public QWidget
 {
     Q_OBJECT
 public:
-    GalleryPhotoWidget(QWidget *parent = nullptr);
     GalleryPhotoWidget(GalleryPhotoData data, QWidget* parent = nullptr);
-
-    void updateWidgetsPosition();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 public:
-    static int fixed_width;
-    static int fixed_height;
+    static int fixed_width, fixed_height;
+    static int pixmap_width, pixmap_height;
     static QColor title_color;
     static QColor subTitle_color;
 
 private:
-    QPixmap pixmap;
-    QString title, subTitle;
-
+    QVBoxLayout* main_vlayout;
     QLabel* pixmap_label, *title_label, *subTitle_label;
 };
-
-int GalleryPhotoWidget::fixed_width = 100;
-int GalleryPhotoWidget::fixed_height = 150;
-QColor GalleryPhotoWidget::title_color = Qt::black;
-QColor GalleryPhotoWidget::subTitle_color = Qt::gray;
 
 #endif // GALLERYPHOTOWIDGET_H
