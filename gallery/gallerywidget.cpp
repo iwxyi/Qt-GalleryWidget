@@ -1,7 +1,7 @@
 #include "gallerywidget.h"
 
-int GalleryWidget::item_spacing_h = 30;
-int GalleryWidget::item_spacing_v = 30;
+int GalleryWidget::item_spacing_h = 10;
+int GalleryWidget::item_spacing_v = 10;
 
 GalleryWidget::GalleryWidget(QWidget *parent) : QScrollArea(parent)
 {
@@ -53,6 +53,7 @@ void GalleryWidget::resizeGallery(QPoint emit_pos)
         ani->setEndValue(pos);
         ani->setDuration(300);
         ani->setEasingCurve(QEasingCurve::OutQuad);
+        connect(ani, SIGNAL(finished()), ani, SLOT(deleteLater()));
         ani->start();
 
         cur_col++;

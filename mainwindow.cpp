@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "interactivebuttonbase.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,11 +19,13 @@ MainWindow::~MainWindow()
 void MainWindow::initData()
 {
     QList<GalleryPhotoData> list;
-    for (int i = 0; i < 7; i++)
+    srand(time(0));
+    int count = rand() % 10 + 5;
+    for (int i = 0; i < count; i++)
     {
         QPixmap pixmap(":/pictures/a");
-        QString title = "Title" + QString::number(i);
-        QString subTitle = "SubTitle" + QString::number(i);
+        QString title = "诸天谍影" + QString::number(i);
+        QString subTitle = "起点上随便找的封面" + QString::number(i);
         GalleryPhotoData data{pixmap, title, subTitle};
         list.append(data);
     }
