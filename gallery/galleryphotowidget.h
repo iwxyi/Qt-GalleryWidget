@@ -14,6 +14,30 @@ struct GalleryPhotoData
     QString subTitle;
 };
 
+class RoundCornerWidget : public QWidget
+{
+public:
+    RoundCornerWidget(QPixmap pixmap, int radius, QWidget* parent = nullptr)
+        : QWidget(parent), pixmap(pixmap), radius(radius)
+    {
+    }
+
+protected:
+    void paintEvent(QPaintEvent *) override
+    {
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        QPainterPath path;
+        path.addRoundedRect(QRect(0,0,width(),height()),radius,radius);
+        painter.setClipPath(path, Qt::IntersectClip);
+        painter.drawPixmap(QRect(0,0,width(), height()), pixmap);
+    }
+
+private:
+    QPixmap pixmap;
+    int radius;
+};
+
 class GalleryPhotoWidget : public WaterZoomButton
 {
     Q_OBJECT
@@ -29,7 +53,8 @@ public:
 
 private:
     QVBoxLayout* main_vlayout;
-    QLabel* pixmap_label, *title_label, *subTitle_label;
+    RoundCornerWidget* rc_widget;
+    QLabel *title_label, *subTitle_label;
 };
 
 #endif // GALLERYPHOTOWIDGET_H

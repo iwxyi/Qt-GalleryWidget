@@ -18,18 +18,16 @@ GalleryPhotoWidget::GalleryPhotoWidget(GalleryPhotoData data, QWidget *parent) :
     setRadius(5, 10);
 
     main_vlayout = new QVBoxLayout(this);
-    pixmap_label = new QLabel("", this);
+    rc_widget = new RoundCornerWidget(data.pixmap, 5, this);
     title_label = new QLabel(data.title, this);
     subTitle_label = new QLabel(data.subTitle, this);
 
-    main_vlayout->addWidget(pixmap_label);
+    main_vlayout->addWidget(rc_widget);
     main_vlayout->addWidget(title_label);
     main_vlayout->addWidget(subTitle_label);
     main_vlayout->setMargin(19);
 
-    pixmap_label->setPixmap(data.pixmap);
-    pixmap_label->setScaledContents(true);
-    pixmap_label->setFixedSize(pixmap_width, pixmap_height);
+    rc_widget->setFixedSize(pixmap_width, pixmap_height);
 
     QPalette pa(title_label->palette());
     pa.setColor(QPalette::WindowText, title_color);
@@ -38,6 +36,9 @@ GalleryPhotoWidget::GalleryPhotoWidget(GalleryPhotoData data, QWidget *parent) :
     pa = subTitle_label->palette();
     pa.setColor(QPalette::WindowText, subTitle_color);
     subTitle_label->setPalette(pa);
+
+    subTitle_label->setWordWrap(true);
+    subTitle_label->adjustSize();
 
     setFixedSize(fixed_width, fixed_height);
 
