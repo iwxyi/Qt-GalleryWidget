@@ -18,10 +18,10 @@ protected:
     QPainterPath getBgPainterPath() override;
     void resizeEvent(QResizeEvent *event) override;
 
-private:
-    int choking;
+protected:
+    int choking; // 向里缩的长度
     double choking_prop;
-    int radius_zoom;
+    int radius_zoom; // 收缩时的半径
 };
 
 #endif // WATERZOOMBUTTON_H

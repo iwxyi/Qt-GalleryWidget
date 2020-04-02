@@ -17,30 +17,43 @@ GalleryPhotoWidget::GalleryPhotoWidget(GalleryPhotoData data, QWidget *parent) :
     setChoking(10);
     setRadius(5, 10);
 
-    main_vlayout = new QVBoxLayout(this);
-    rc_widget = new RoundCornerWidget(data.pixmap, 5, this);
-    title_label = new QLabel(data.title, this);
-    subTitle_label = new QLabel(data.subTitle, this);
-
-    main_vlayout->addWidget(rc_widget);
-    main_vlayout->addWidget(title_label);
-    main_vlayout->addWidget(subTitle_label);
-    main_vlayout->setMargin(19);
-
-    rc_widget->setFixedSize(pixmap_width, pixmap_height);
-
-    QPalette pa(title_label->palette());
-    pa.setColor(QPalette::WindowText, title_color);
-    title_label->setPalette(pa);
-
-    pa = subTitle_label->palette();
-    pa.setColor(QPalette::WindowText, subTitle_color);
-    subTitle_label->setPalette(pa);
-
-    subTitle_label->setWordWrap(true);
-    subTitle_label->adjustSize();
+    this->pixmap = data.pixmap;
+    this->title = data.title;
+    this->subTitle = data.subTitle;
 
     setFixedSize(fixed_width, fixed_height);
+    pixmap.scaled(pixmap_width, pixmap_height);
 
     this->show();
+}
+
+void GalleryPhotoWidget::paintEvent(QPaintEvent *event)
+{
+    WaterZoomButton::paintEvent(event);
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    QPainterPath path;
+
+    // 获取图片路径
+    int c;
+    int r;
+    if (!hover_progress)
+    {
+        c = choking;
+        r = radius_x;
+    }
+    else
+    {
+        c = choking * (1 - getNolinearProg(hover_progress, hovering?FastSlower:SlowFaster));
+        r = radius_zoom < 0 ? radius_x :
+                              radius_x + (radius_zoom-radius_x) * hover_progress / 100;
+    }
+    const int margin = 10;
+
+    path.addRoundedRect(QRect(c+margin,c+margin,size().width()-c*2-margin*2,(size().width()-c*2-margin*2)*pixmap_height/pixmap_width), r, r);
+    painter.setClipPath(path, Qt::IntersectClip);
+    painter.drawPixmap(QRect(0,0,width(), height()), pixmap);
+
+    // 画文字
 }
