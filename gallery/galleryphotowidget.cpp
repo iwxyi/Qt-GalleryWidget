@@ -32,6 +32,7 @@ void GalleryPhotoWidget::paintEvent(QPaintEvent *event)
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHints(QPainter::SmoothPixmapTransform);
     QPainterPath path;
 
     // 获取图片路径
@@ -69,5 +70,4 @@ void GalleryPhotoWidget::paintEvent(QPaintEvent *event)
     painter.setPen(subTitle_color);
     QRect f_rect = fm.boundingRect(QRect(rect.left(),rect.bottom()+line_height*1.5,rect.width(),0),Qt::TextWordWrap,subTitle);
     painter.drawText(f_rect, Qt::TextWordWrap, subTitle);
-//    painter.drawText(QPoint(rect.left(), rect.bottom()+line_height*2), subTitle);
 }
