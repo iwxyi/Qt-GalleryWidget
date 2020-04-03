@@ -23,9 +23,9 @@ void MainWindow::initData()
     int count = rand() % 10 + 5;
     for (int i = 0; i < count; i++)
     {
-        QPixmap pixmap(":/pictures/a");
-        QString title = "诸天谍影" + QString::number(i);
-        QString subTitle = "起点上随便找的封面诸天谍影" + QString::number(i);
+        QPixmap pixmap(":/pictures/picture");
+        QString title = "凤翎谱" + QString::number(i);
+        QString subTitle = "作者：北宫懒懒" + QString::number(i);
         GalleryPhotoData data{pixmap, title, subTitle};
         list.append(data);
     }
