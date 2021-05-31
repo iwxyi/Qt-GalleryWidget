@@ -18,7 +18,6 @@ public:
 
     void loadData(QList<GalleryPhotoData> list);
     void resizeGallery(QPoint emit_pos = QPoint(0, 0));
-    void startAnimation();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

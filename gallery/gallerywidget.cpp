@@ -29,8 +29,13 @@ void GalleryWidget::loadData(QList<GalleryPhotoData> list)
     resizeGallery();
 }
 
+/**
+ * 重新调整所有控件的位置
+ */
 void GalleryWidget::resizeGallery(QPoint emit_pos)
 {
+    if (widgets.isEmpty())
+        return ;
     int gpw_width = GalleryPhotoWidget::fixed_width, gpw_height = GalleryPhotoWidget::fixed_height;
     int bar_width = verticalScrollBar()->width();
     int col_count = qMax((center_widget->width()-item_spacing_h-bar_width) / (gpw_width + item_spacing_h), 1); // 一列数量
@@ -63,14 +68,6 @@ void GalleryWidget::resizeGallery(QPoint emit_pos)
             cur_row++;
         }
     }
-}
-
-/**
- * 列表出现动画
- */
-void GalleryWidget::startAnimation()
-{
-
 }
 
 void GalleryWidget::resizeEvent(QResizeEvent *event)
